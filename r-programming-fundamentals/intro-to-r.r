@@ -1,4 +1,5 @@
 # TABLE OF CONTENTS:
+    # NOTES
     # Mathematical operations
     # Data types:
     ##  1. Numeric
@@ -12,15 +13,26 @@
     ##  Vector addition
     # Matrices
     # Factors
+    # Data Frames
+    # Lists
 
 # -----------------------------------------------------------------------------
     # NOTE: Assign a value to a variable
     ##  variable name <- value
 # -----------------------------------------------------------------------------
+    # NOTE: Explanation of Vectors, Matrices, and Data frames
+    # Vectors (one dimensional array): can hold numeric, character or logical values. 
+        # The elements in a vector all have the same data type.
+    # Matrices (two dimensional array): can hold numeric, character or logical values. 
+        # The elements in a matrix all have the same data type.
+    # Data frames (two-dimensional objects): can hold numeric, character or logical values. 
+        # Within a column all elements have the same data type, 
+        # but different columns can be of different data type.
+# -----------------------------------------------------------------------------
 ## Mathematical operations
 ## Addition
 x <- 3+4
-print(x)
+print(x)    
 
 ## Subtraction
 y <- 10-5
@@ -94,6 +106,24 @@ print(total_vector)
 
 week1_balance <- c(140, -50, 20, -120, 240)
 week2_balance <- c(120, -40, 25, -130, 260)
+
+# order() function is used to order the elements of a vector
+# in ascending or descending order
+sorted_week1_balance <- sort(week1_balance) # ascending
+print(sorted_week1_balance)
+
+# order descending
+sorted_week1_balance_desc <- sort(week1_balance, decreasing = TRUE)
+print(sorted_week1_balance_desc)
+
+## using order() function to order the elements of a vector
+## in ascending or descending order
+sorted_week2_balance <- week2_balance[order(week2_balance)] # ascending
+print(sorted_week2_balance)
+
+# order descending
+sorted_week2_balance_desc <- week2_balance[order(week2_balance, decreasing = TRUE)]
+print(sorted_week2_balance_desc)
 
 total_week1 <- sum(week1_balance)
 total_week2 <- sum(week2_balance)
@@ -241,3 +271,140 @@ print(factor_animals_vector)
 temperature_vector <- c("High", "Low", "High","Low", "Medium")
 factor_temperature_vector <- factor(temperature_vector, order = TRUE, levels = c("Low", "Medium", "High"))
 print(factor_temperature_vector)
+
+# Build factor_survey_vector
+survey_vector <- c("M", "F", "F", "M", "M")
+factor_survey_vector <- factor(survey_vector)
+
+# Specify the levels of factor_survey_vector
+# Explaination:
+# The levels of a factor are the different values that the factor can take. 
+# In this case, the factor can take the values "Female" and "Male".
+# If it is not specified, R will automatically assign the levels in alphabetical order as "F", "M".
+levels(factor_survey_vector) <- c("Female", "Male")
+
+# Generate summary of factor_survey_vector
+print(summary(factor_survey_vector))
+
+# Male
+male <- factor_survey_vector[1]
+# Female
+female <- factor_survey_vector[2]
+
+# Check if number of males is greater than females
+male_count <- sum(factor_survey_vector == "Male")
+female_count <- sum(factor_survey_vector == "Female")
+print(male_count > female_count)
+
+# Exercise:
+# Create speed_vector
+speed_vector <- c("medium", "slow", "slow", "medium", "fast")
+# Convert speed_vector to ordered factor vector
+factor_speed_vector <- factor(speed_vector, ordered=TRUE, levels=c("slow", "medium", "fast"))
+# Print factor_speed_vector
+factor_speed_vector
+summary(factor_speed_vector)
+
+# Data Frames
+# Data frames are used to store tabular data in R.
+# They are two-dimensional, with rows and columns.
+# Each column can be of different data type.
+
+# Create a sample dataframe with 10 rows
+sample_df <- data.frame(
+    Name = c("John", "Jane", "Jim", "Jill", "Jack", "Jill", "Jim", "Jane", "John", "Jack"),
+    Age = c(25, 30, 35, 40, 45, 50, 55, 60, 65, 70),
+    Gender = c("Male", "Female", "Male", "Female", "Male", "Female", "Male", "Female", "Male", "Female"),
+    Height = c(170, 165, 180, 160, 175, 165, 180, 160, 170, 175),
+    Weight = c(70, 65, 80, 60, 75, 65, 80, 60, 70, 75),
+    Student = c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)
+)
+print(sample_df)
+
+# Call head of the dataframe
+print("Head of the dataframe:")
+print(head(sample_df))
+
+# Call tail of the dataframe
+print("Tail of the dataframe:")
+print(tail(sample_df))
+
+# Check the structure of the dataframe
+# str() function is used to check the structure of the dataframe
+# obs: # of observations (# rows)
+# of N variables (N columns) & their data types
+print("Structure of the dataframe:")
+print(str(sample_df))
+
+# Create a dataframe from vectors
+# Definition of vectors
+name <- c("Mercury", "Venus", "Earth", 
+          "Mars", "Jupiter", "Saturn", 
+          "Uranus", "Neptune")
+type <- c("Terrestrial planet", 
+          "Terrestrial planet", 
+          "Terrestrial planet", 
+          "Terrestrial planet", "Gas giant", 
+          "Gas giant", "Gas giant", "Gas giant")
+diameter <- c(0.382, 0.949, 1, 0.532, 
+              11.209, 9.449, 4.007, 3.883)
+rotation <- c(58.64, -243.02, 1, 1.03, 
+              0.41, 0.43, -0.72, 0.67)
+rings <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
+# Create a data frame from the vectors
+planets_df <- data.frame(name, type, diameter, rotation, rings)
+
+print("Structure of the dataframe:")
+print(str(planets_df))
+
+# Print out diameter of Mercury (row 1, column 3)
+print("Diameter of Mercury:")
+print(planets_df[1, 3])
+# Print out data for Mars (entire fourth row)
+print("Data for Mars:")
+print(planets_df[4, ])
+# Print first 5 values of diameter column
+print("First 5 values of diameter column:")
+print(planets_df[1:5,"diameter"])
+
+# Get the rings variable from planets_df
+rings_vector <- planets_df$rings
+# Print out rings_vector
+print(rings_vector)
+# Adapt the code to select all columns for planets with rings
+print("Planets with rings:")
+print(planets_df[rings_vector,])
+
+# Select planets with diameter < 1
+# using subset() function to select elements with a condition
+print("Planets with diameter < 1:")
+print(subset(planets_df, subset= diameter <1))
+
+# Use order() to create positions to sort planets_df by diameter
+positions <- order(planets_df$diameter)
+# Use positions to sort planets_df
+print("Planets sorted by diameter:")
+print(planets_df[positions, ])
+
+# Lists
+# Lists are a data type in R that can hold elements of different types.
+# Lists are similar to vectors, but they can contain elements of different data types.
+# Lists are created using the list() function.
+
+print("List Example:")
+my_summary_list <- list(week1_balance, all_wars_matrix, planets_df)
+print(my_summary_list)
+
+# Create a named list
+named_list <- list(balance = week1_balance, matrix = all_wars_matrix, dataframe = planets_df)
+print(named_list)
+
+# Print week1_balance from named_list
+print("Week1 balance:")
+print(named_list$balance)
+# Print second movie non-US revenue from all_wars_matrix
+print("Second movie non-US revenue:")
+print(named_list[["matrix"]][2,1])
+# Print name of the planet with diameter 4
+print("Name of the planet with diameter 4:")
+print(named_list$dataframe[named_list$dataframe$diameter == 4, "name"])

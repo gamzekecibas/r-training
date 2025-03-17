@@ -414,3 +414,116 @@ qplot(mtcars$wt, mtcars$hp)
 
 # Check out the currently attached packages again
 search()
+
+# The apply family
+# lapply
+#   apply function over list or vector
+#   output = list
+
+# The vector pioneers has already been created for you
+pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
+
+# Split names from birth year
+split_math <- strsplit(pioneers, split = ":")
+
+# Convert to lowercase strings: split_low
+split_low <- lapply(split_math, tolower)
+
+# Take a look at the structure of split_low
+str(split_low)
+# Code from previous exercise:
+pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
+split <- strsplit(pioneers, split = ":")
+split_low <- lapply(split, tolower)
+
+# Write function select_first()
+select_first <- function(x) {
+  x[1]
+}
+
+# Apply select_first() over split_low: names
+names <- lapply(split_low, select_first)
+
+# Write function select_second()
+# Write function select_first()
+select_first <- function(x) {
+  x[2]
+}
+
+# Apply select_second() over split_low: years
+years <- lapply(split_low, select_second)
+
+# Alternatively,
+names <- lapply(split_low, function(x) {x[1]})
+years <- lapply(split_low, function(x) {x[2]})
+
+# Alternatively,
+# Generic select function
+select_el <- function(x, index) {
+  x[index]
+}
+
+# Use lapply() twice on split_low: names and years
+names <- lapply(split_low, select_el, index=1)
+years <- lapply(split_low, select_el, index=2)
+
+# sapply
+#   apply function over list or vector
+#   try to simplify list to array
+temp <-  list(
+  c(3, 7, 9, 6, -1),
+  c(6, 9, 12, 13, 5),
+  c(4, 8, 3, -1, -3),
+  c(1, 4, 7, 2, -2),
+  c(5, 7, 9, 4, 2),
+  c(-3, 5, 8, 9, 4),
+  c(3, 6, 9, 4, 1)
+)
+
+# Definition of below_zero()
+below_zero <- function(x) {
+  return(x[x < 0])
+}
+
+# Apply below_zero over temp using sapply(): freezing_s
+freezing_s <- sapply(temp, below_zero)
+
+# Apply below_zero over temp using lapply(): freezing_l
+freezing_l <- lapply(temp, below_zero)
+
+# Are freezing_s and freezing_l identical?
+print(identical(freezing_s, freezing_l))
+
+# Definition of print_info()
+print_info <- function(x) {
+  cat("The average temperature is", mean(x), "\n")
+}
+
+# Apply print_info() over temp using sapply()
+sapply(temp, print_info)
+
+# Apply print_info() over temp using lapply()
+lapply(temp, print_info)
+
+# vapply
+#   apply function over list or vector
+#   explicitly specify output format
+
+# Definition of basics()
+basics <- function(x) {
+  c(min = min(x), mean = mean(x), max = max(x))
+}
+
+# Apply basics() over temp using vapply()
+result <- vapply(temp, basics, numeric(3))
+
+# Print the result
+print(result)
+
+# Convert to vapply() expression
+# sapply(temp, max)
+vapply(temp, max, numeric(1))
+
+# Convert to vapply() expression
+# sapply(temp, function(x, y) { mean(x) > y }, y = 5)
+vapply(temp, function(x, y) { mean(x) > y }, logical(1), y = 5)

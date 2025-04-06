@@ -527,3 +527,103 @@ vapply(temp, max, numeric(1))
 # Convert to vapply() expression
 # sapply(temp, function(x, y) { mean(x) > y }, y = 5)
 vapply(temp, function(x, y) { mean(x) > y }, logical(1), y = 5)
+
+## Useful functions
+v1 <- c(1.1, -7.1, 5.4, -2.7)
+v2 <- c(-3.6, 4.1, 5.8, -8.0)
+
+mean(c(sum(round(abs(v1))), sum(round(abs(v2)))))
+
+# Functions for data structure
+li <- list(log=TRUE,
+            ch="hello",
+            int_vec=sort(
+                    rep(seq(8, 2, by=-2), times=2)
+                    )
+            )
+
+# is.list(li)
+li2 <- as.list(c(1,2,3))
+is.list(li2)  ## TRUE
+
+unlist(li)
+
+str(append(li, rev(li)))
+str(rev(li))
+
+# Regular Expression
+# grepl(pattern = <regex>, x= <string>) --> logical list result
+# grep(pattern = <regex>, x= <string>) --> give indices in the list
+animals <- c("cat", "moose", "impala", "ant", "kiwi")
+grepl(pattern="a", x=animals)  # including a 
+grepl(pattern="^a", x=animals)  # start with a 
+grepl(pattern="a$", x=animals)  # end with a 
+
+grep(pattern="a", x=animals)
+# Alternative to check related indices
+which(grepl(pattern="a", x=animals))
+
+# sub() & gsub()
+# sub(pattern=<regex>, replacement= <str>, x=<str>)
+sub(pattern="a", replacement= "o", x=animals) # replace firstly detected a's with o
+gsub(pattern="a", replacement= "o", x=animals) # replace all a's with o
+gsub(pattern="a|i", replacement="_", x=animals) #conditions
+
+# Times & Dates
+# today
+today <- Sys.Date()
+class(today) # Date
+
+now <- Sys.time()
+class(now) # POSIXct, POSIXt
+
+custom_date <- as.Date("1971-05-14") ## YYYY-MM-DD
+custom_date2 <- as.Date("2000-28-03", format="%Y-%d-%m") ## YYYY-DD-MM --> YYYY-MM-DD
+custom_date
+
+custom_date + 1 # 1971-05-15
+custom_date2 - custom_date # Time difference of 10546 days
+class(custom_date) # Date
+
+custom_time <- as.POSIXct("1971-05-14 11:25:15 UTC")
+custom_time2 <- as.POSIXct("1974-07-14 21:11:55 UTC")
+class(custom_time)
+
+custom_time + 1 # "1971-05-14 11:25:16 UTC"
+custom_time2 - custom_time #Time difference of 1157.366 days
+
+unclass(custom_date) #498
+unclass(custom_time) #43061115
+attr(custom_time, "tzone") #""
+
+# Dedicated packages: lubridate, zoo, xts
+#### FOR DATE:
+# %Y: 4-digit year (1982)
+# %y: 2-digit year (82)
+# %m: 2-digit month (01)
+# %d: 2-digit day of the month (13)
+# %A: weekday (Wednesday)
+# %a: abbreviated weekday (Wed)
+# %B: month (January)
+# %b: abbreviated month (Jan)
+
+#### FOR TIME:
+# %H: hours as a decimal number (00-23)
+# %I: hours as a decimal number (01-12)
+# %M: minutes as a decimal number
+# %S: seconds as a decimal number
+# %T: shorthand notation for the typical format %H:%M:%S
+# %p: AM/PM indicator
+
+# Definition of character strings representing times
+str1 <- "May 23, '96 hours:23 minutes:01 seconds:45"
+str2 <- "2012-3-12 14:23:08"
+
+# Convert the strings to POSIXct objects: time1, time2
+# Convert the strings to POSIXct objects: time1, time2
+time1 <- as.POSIXct(str1, format = "%B %d, '%y hours:%H minutes:%M seconds:%S")
+time2 <- as.POSIXct(str2)  # No need to specify format here
+
+# Convert times to formatted strings
+print(format(time1, "%M"))
+print(format(time2, "%I:%M %p"))
